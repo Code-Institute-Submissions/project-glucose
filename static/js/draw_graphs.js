@@ -1,7 +1,3 @@
-/**
- * Created by proto on 25/10/2016.
- */
-
 queue()
     .defer(d3.json, "/glucose/projects")
     .await(makeGraphs);
@@ -85,6 +81,8 @@ function makeGraphs(error, projectsJson) {
         return d["Timestamp"];
     });
 
+
+
     var groupedBG = timeDim.group().reduceSum(function(d) {
         return d["BG Reading"];
     });
@@ -117,11 +115,18 @@ function makeGraphs(error, projectsJson) {
     var minDate = timeDim.bottom(1)[0]["Timestamp"];
     var maxDate = timeDim.top(1)[0]["Timestamp"];
 
+    //     var onlylow = ratingDim.filter("Low");
+    //
+    //     var hypos = onlylow.group().reduceCount( function (d){
+    //     return d("BG Rating")
+    // });
+
     //Charts
     var timeChart = dc.lineChart("#time-chart");
     var ratingChart = dc.pieChart("#rating-chart");
     var avgChart = dc.lineChart("#average-chart");
     var periodChart = dc.pieChart("#period-chart");
+    var hyposChart = dc.rowChart("#hypos-chart");
 
     // var resourceTypeChart = dc.rowChart("#resource-type-row-chart");
     // var povertyLevelChart = dc.rowChart("#poverty-level-row-chart");
@@ -139,8 +144,8 @@ function makeGraphs(error, projectsJson) {
         .brushOn(true)
             .renderDataPoints(true)
         // .renderArea(false)
-        .xAxisLabel("Date")
-        .yAxisLabel ("BG Reading")
+        .xAxisLabel("2016")
+        .yAxisLabel ("Blood Glucose")
         .yAxis().ticks(4);
 
     ratingChart
@@ -158,6 +163,14 @@ function makeGraphs(error, projectsJson) {
         .transitionDuration(1000)
         .dimension(periodDim)
         .group(groupedPeriod);
+
+    hyposChart
+        .width(300)
+        .height(200)
+        .x(d3.scale.linear())
+        .elasticX(true)
+        .dimension(ratingDim)
+        .group(groupedRating);
 
     avgChart
          .width(800)

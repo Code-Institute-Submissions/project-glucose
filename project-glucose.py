@@ -8,7 +8,7 @@ app = Flask(__name__)
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
 DBS_NAME = 'project_glucose'
-COLLECTION_NAME = 'data_test'
+COLLECTION_NAME = 'data_test2'
 FIELDS = {'Timestamp': True, 'BG Reading': True, 'Date': True, 'Time': True, 'Raw-Type': True, '_id': False}
 
 @app.route("/")
