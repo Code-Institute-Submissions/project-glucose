@@ -201,9 +201,12 @@ function makeGraphs(error, projectsJson) {
         })
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
-        .elasticY(false)
+        .elasticY(true)
+        .elasticX(true)
         .brushOn(false)
         .renderDataPoints(true)
+        .renderHorizontalGridLines(true)
+        .renderArea(true)
         .yAxisLabel ("Average BG (mmol/L)")
         .yAxis().ticks(4);
 

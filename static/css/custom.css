@@ -24,7 +24,7 @@
 }
 
 .panel-body {
-    background-color: #bce8f1;
+    background-color: #2d2d2d;
 }
 .panel-heading {
 background: linear-gradient(
@@ -34,14 +34,13 @@ background: linear-gradient(
   #2e6da4 50%,
   #2e6da4
 );
-/* The rectangle in which to repeat.
-   It can be fully wide in this case */
+
 background-size: 100% 20px;
 }
 
 .data-text {
     font-size: 40px;
-    color: #666666;
+    color: #cccccc;
 }
 
 body {
@@ -61,4 +60,9 @@ body {
 li {
     list-style: none;
     text-align: left;
+}
+
+g text {
+    fill: whitesmoke;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
