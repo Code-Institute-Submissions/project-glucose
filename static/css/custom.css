@@ -1,16 +1,16 @@
-.dc-chart g.row text {
-   fill: black;
-   font-size: 12px;
-}
+/*.dc-chart g.row text {*/
+   /*fill: black;*/
+   /*font-size: 12px;*/
+/*}*/
 
 #wrapper {
     padding-left: 20px;
 }
 
-.dc-chart .axis text {
-  /*font-size: 20px;*/
-  color: whitesmoke; !important
-}
+/*.dc-chart .axis text {*/
+  /*!*font-size: 20px;*!*/
+  /*color: whitesmoke; !important*/
+/*}*/
 
 /*.dc-chart .axis path, .axis line {*/
     /*fill: none;*/
@@ -20,10 +20,23 @@
 
 .dc-chart .axis text {
     font: 10px sans-serif;
+    color: white;
 }
 
 .panel-body {
     background-color: #bce8f1;
+}
+.panel-heading {
+background: linear-gradient(
+  to bottom,
+  #2a6496,
+  #2a6496 50%,
+  #2e6da4 50%,
+  #2e6da4
+);
+/* The rectangle in which to repeat.
+   It can be fully wide in this case */
+background-size: 100% 20px;
 }
 
 .data-text {
@@ -31,3 +44,21 @@
     color: #666666;
 }
 
+body {
+    background-image: url('../img/medical-background.jpg') ;
+    background-size: cover;
+}
+
+#ghicon {
+    margin-top: 5px;
+    float: right;
+}
+
+.tooltip {
+    width: 200px;
+}
+
+li {
+    list-style: none;
+    text-align: left;
+}

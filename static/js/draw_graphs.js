@@ -2,14 +2,8 @@ queue()
     .defer(d3.json, "/glucose/projects")
     .await(makeGraphs);
 
-function print_filter(filter){
-    var f=eval(filter);
-    if (typeof(f.length) != "undefined") {}else{}
-    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
-    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
-    console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
-}
 
+// Create columns for inferred data I wish to use as dimensions later
 function getBGrating(reading) {
     if (reading > 20)
         return "Very High";
@@ -48,8 +42,7 @@ function makeGraphs(error, projectsJson) {
         d["Time"] = timeFormat.parse(d["Time"]);
         d["BG Rating"] = getBGrating(d["BG Reading"]);
         d["Time Period"] = getPeriod(d["Time"]);
-        // d["Timestamp"].setDate(1);
-        // d["total_donations"] = +d["total_donations"];
+
     });
 
 
@@ -62,8 +55,6 @@ function makeGraphs(error, projectsJson) {
         return d["Raw-Type"];
     });
 
-    // var onlyBG = rawtypeDim.filter("BGReceived");
-    // print_filter(onlyBG);
 
     var ratingDim = ndx.dimension(function (d) {
         return d["BG Rating"];
@@ -90,7 +81,6 @@ function makeGraphs(error, projectsJson) {
         return d["BG Reading"];
     });
 
-    // var all = ndx.groupAll();
 
     var overallAvgBG = ndx.groupAll().reduce(
 
@@ -145,15 +135,10 @@ function makeGraphs(error, projectsJson) {
     var groupedRating = ratingDim.group();
     var groupedPeriod = periodDim.group();
 
-    //Define values (to be used in charts)
+
     var minDate = timeDim.bottom(1)[0]["Timestamp"];
     var maxDate = timeDim.top(1)[0]["Timestamp"];
 
-    //     var onlylow = ratingDim.filter("Low");
-    //
-    //     var hypos = onlylow.group().reduceCount( function (d){
-    //     return d("BG Rating")
-    // });
 
     //Charts
     var timeChart = dc.lineChart("#time-chart");
@@ -162,9 +147,6 @@ function makeGraphs(error, projectsJson) {
     var periodChart = dc.pieChart("#period-chart");
     var hyposND = dc.numberDisplay("#hypos-chart");
     var overallavgbgND = dc.numberDisplay("#overallavgbg-chart");
-
-    // var resourceTypeChart = dc.rowChart("#resource-type-row-chart");
-    // var povertyLevelChart = dc.rowChart("#poverty-level-row-chart");
 
 
     timeChart
@@ -175,7 +157,7 @@ function makeGraphs(error, projectsJson) {
         .group(groupedBG)
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
-        .elasticY(true)
+        .elasticY(false)
         .brushOn(true)
         .renderDataPoints(false)
         .yAxisLabel ("Blood Glucose (mmol/L)")
@@ -219,7 +201,7 @@ function makeGraphs(error, projectsJson) {
         })
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
-        .elasticY(true)
+        .elasticY(false)
         .brushOn(false)
         .renderDataPoints(true)
         .yAxisLabel ("Average BG (mmol/L)")
@@ -235,8 +217,6 @@ function makeGraphs(error, projectsJson) {
         })
         .group(overallAvgBG)
         .formatNumber(d3.format(".3s"));
-
-
 
     dc.renderAll();
 }
