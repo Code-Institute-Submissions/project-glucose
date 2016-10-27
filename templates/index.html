@@ -3,17 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/lib/css/dc.css">
+    <link rel="stylesheet" href="../static/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/custom.css">
+
     <title>GlucoTrend</title>
 </head>
 <body>
-<h1>Ahoy, World!</h1>
 
-<div id="time-chart"></div>
-<div id="rating-chart"></div>
-<div id="average-chart"></div>
-<div id="period-chart"></div>
-<div id="hypos-chart"></div>
+<div class="container">
+    <h1>Ahoy, World!</h1>
+    <div class="row">
+        <div id="time-chart"></div>
+        <div id="rating-chart"></div>
+    </div>
+    <div class="row">
+        <div id="average-chart"></div>
+        <div id="period-chart"></div>
+    </div>
+
+    <div class="row">
+        <div id="hypos-chart"></div>
+    </div>
+    <div class="row">
+        <div id="overallavgbg-chart"></div>
+    </div>
+</div>
 
 <script src="../static/lib/js/jquery.min.js"></script>
 <script src="../static/lib/js/bootstrap.min.js"></script>

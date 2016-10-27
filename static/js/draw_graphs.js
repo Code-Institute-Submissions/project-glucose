@@ -22,7 +22,7 @@ function getBGrating(reading) {
 }
 
 function getPeriod(time) {
-   var period = time.getHours();
+    var period = time.getHours();
     if (period >=23)
         return "Overnight";
     else if (period <=7)
@@ -62,8 +62,8 @@ function makeGraphs(error, projectsJson) {
         return d["Raw-Type"];
     });
 
-    var onlyBG = rawtypeDim.filter("BGReceived");
-    print_filter(onlyBG);
+    // var onlyBG = rawtypeDim.filter("BGReceived");
+    // print_filter(onlyBG);
 
     var ratingDim = ndx.dimension(function (d) {
         return d["BG Rating"];
@@ -72,10 +72,13 @@ function makeGraphs(error, projectsJson) {
     var periodDim = ndx.dimension(function (d) {
         return d["Time Period"];
     });
-    // var dateDim = ndx.dimension(function (d) {
-    //     return d["Date"];
-    // });
+    var dateDim = ndx.dimension(function (d) {
+        return d["Date"];
+    });
 
+    var readingDim = ndx.dimension(function (d) {
+        return d["BG Reading"];
+    });
 
     var timeDim = ndx.dimension(function (d) {
         return d["Timestamp"];
@@ -86,25 +89,56 @@ function makeGraphs(error, projectsJson) {
     var groupedBG = timeDim.group().reduceSum(function(d) {
         return d["BG Reading"];
     });
-    function reduceAdd(p, v) {
-        ++p.count;
-        p.total += v.value;
-        return p;
-    }
 
-    function reduceRemove(p, v) {
-        --p.count;
-        p.total -= v.value;
-        return p;
-    }
+    // var all = ndx.groupAll();
 
-    function reduceInitial() {
-        return {count: 0, total: 0};
-    }
+    var overallAvgBG = ndx.groupAll().reduce(
 
-    var averageBG = timeDim.group().reduce(reduceAdd, reduceRemove, reduceInitial);
+        function reduceAdd(p, v) {
+            ++p.count;
+            p.total += v["BG Reading"];
+            return p;
+        },
+        function reduceRemove(p, v) {
+            --p.count;
+            p.total -= v["BG Reading"];
+            return p;
+        },
+        function reduceInitial() {
+            return {count: 0, total: 0};
+        });
 
 
+    var averageBG = dateDim.group().reduce(
+
+        function reduceAdd(p, v) {
+            ++p.count;
+            p.total += v["BG Reading"];
+            return p;
+        },
+        function reduceRemove(p, v) {
+            --p.count;
+            p.total -= v["BG Reading"];
+            return p;
+        },
+        function reduceInitial() {
+            return {count: 0, total: 0};
+        });
+
+    var hypoCount = ratingDim.group().reduce(
+        function reduceAdd(p, v) {
+            if (v["BG Rating"] == "Low")
+                ++p;
+            return p;
+        },
+        function reduceRemove(p, v) {
+            if (v["BG Rating"] == "Low")
+                --p;
+            return p;
+        },
+        function reduceInitial() {
+            return 0;
+        });
 
 
     //Calculate metrics
@@ -126,7 +160,8 @@ function makeGraphs(error, projectsJson) {
     var ratingChart = dc.pieChart("#rating-chart");
     var avgChart = dc.lineChart("#average-chart");
     var periodChart = dc.pieChart("#period-chart");
-    var hyposChart = dc.rowChart("#hypos-chart");
+    var hyposND = dc.numberDisplay("#hypos-chart");
+    var overallavgbgND = dc.numberDisplay("#overallavgbg-chart");
 
     // var resourceTypeChart = dc.rowChart("#resource-type-row-chart");
     // var povertyLevelChart = dc.rowChart("#poverty-level-row-chart");
@@ -142,14 +177,13 @@ function makeGraphs(error, projectsJson) {
         .x(d3.time.scale().domain([minDate, maxDate]))
         .elasticY(true)
         .brushOn(true)
-            .renderDataPoints(true)
-        // .renderArea(false)
-        .xAxisLabel("2016")
-        .yAxisLabel ("Blood Glucose")
+        .renderDataPoints(true)
+        // .xAxisLabel("Date")
+        .yAxisLabel ("Blood Glucose (mmol/L)")
         .yAxis().ticks(4);
 
     ratingChart
-        .height(220)
+        .height(200)
         .radius(90)
         .innerRadius(20)
         .transitionDuration(1000)
@@ -164,30 +198,47 @@ function makeGraphs(error, projectsJson) {
         .dimension(periodDim)
         .group(groupedPeriod);
 
-    hyposChart
-        .width(300)
-        .height(200)
-        .x(d3.scale.linear())
-        .elasticX(true)
-        .dimension(ratingDim)
-        .group(groupedRating);
+    hyposND
+        .formatNumber(d3.format("d"))
+        .group(hypoCount)
+        .valueAccessor(function(d) {
+            return d.value;
+        })
+
+        .formatNumber(d3.format("s"));
 
     avgChart
-         .width(800)
+        .width(800)
         .height(200)
         .margins({top: 10, right: 50, bottom: 30, left: 50})
-        .dimension(timeDim)
+        .dimension(dateDim)
         .group(averageBG)
-        .valueAccessor(function(p) { return p.value.count > 0 ? p.value.total / p.value.count : 0; })
+        .valueAccessor(function (p) {
+            if (p.value.count == 0)
+                return 0;
+            else
+                return p.value.total / p.value.count;
+        })
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
         .elasticY(true)
         .brushOn(true)
-            .renderDataPoints(true)
-        // .renderArea(false)
         .xAxisLabel("Date")
-        .yAxisLabel ("BG Reading")
+        .yAxisLabel ("Average BG")
         .yAxis().ticks(4);
+
+    overallavgbgND
+        .formatNumber(d3.format("d"))
+        .valueAccessor(function(p) {
+            if (p.count == 0)
+                return 0;
+            else
+                return p.total / p.count;
+        })
+        .group(overallAvgBG)
+        .formatNumber(d3.format(".3s"));
+
+
 
     dc.renderAll();
 }

@@ -13,7 +13,7 @@ FIELDS = {'Timestamp': True, 'BG Reading': True, 'Date': True, 'Time': True, 'Ra
 
 @app.route("/")
 def index():
-   return render_template("index.html")
+   return render_template("index2.html")
 
 
 
@@ -21,14 +21,14 @@ def index():
 def donor_projects():
    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
    collection = connection[DBS_NAME][COLLECTION_NAME]
-   projects = collection.find(projection=FIELDS, limit=5000)
+   projects = collection.find({"Raw-Type": "BGReceived"}, projection=FIELDS, limit=5000)
    json_projects = []
    for project in projects:
-       json_projects.append(project)
+      json_projects.append(project)
    json_projects = json.dumps(json_projects)
    connection.close()
    return json_projects
 
 
 if __name__ == '__main__':
-    app.run()
+   app.run()
