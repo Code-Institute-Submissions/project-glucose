@@ -23,9 +23,11 @@
 }
 
 .panel-body {
-    background-color: linen;
+    background-color: #bce8f1;
 }
 
 .data-text {
     font-size: 40px;
+    color: #666666;
 }
+
