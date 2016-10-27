@@ -170,15 +170,14 @@ function makeGraphs(error, projectsJson) {
     timeChart
         .width(800)
         .height(200)
-        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .margins({top: 10, right: 50, bottom: 30, left: 40})
         .dimension(timeDim)
         .group(groupedBG)
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
         .elasticY(true)
         .brushOn(true)
-        .renderDataPoints(true)
-        // .xAxisLabel("Date")
+        .renderDataPoints(false)
         .yAxisLabel ("Blood Glucose (mmol/L)")
         .yAxis().ticks(4);
 
@@ -191,7 +190,7 @@ function makeGraphs(error, projectsJson) {
         .group(groupedRating);
 
     periodChart
-        .height(220)
+        .height(200)
         .radius(90)
         .innerRadius(20)
         .transitionDuration(1000)
@@ -204,13 +203,12 @@ function makeGraphs(error, projectsJson) {
         .valueAccessor(function(d) {
             return d.value;
         })
-
         .formatNumber(d3.format("s"));
 
     avgChart
         .width(800)
         .height(200)
-        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .margins({top: 10, right: 50, bottom: 30, left: 40})
         .dimension(dateDim)
         .group(averageBG)
         .valueAccessor(function (p) {
@@ -222,9 +220,9 @@ function makeGraphs(error, projectsJson) {
         .transitionDuration(500)
         .x(d3.time.scale().domain([minDate, maxDate]))
         .elasticY(true)
-        .brushOn(true)
-        .xAxisLabel("Date")
-        .yAxisLabel ("Average BG")
+        .brushOn(false)
+        .renderDataPoints(true)
+        .yAxisLabel ("Average BG (mmol/L)")
         .yAxis().ticks(4);
 
     overallavgbgND

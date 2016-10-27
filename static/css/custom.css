@@ -1,8 +1,31 @@
 .dc-chart g.row text {
-   fill: white;
+   fill: black;
    font-size: 12px;
 }
 
 #wrapper {
     padding-left: 20px;
+}
+
+.dc-chart .axis text {
+  /*font-size: 20px;*/
+  color: whitesmoke; !important
+}
+
+/*.dc-chart .axis path, .axis line {*/
+    /*fill: none;*/
+    /*stroke: whitesmoke;*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
+
+.dc-chart .axis text {
+    font: 10px sans-serif;
+}
+
+.panel-body {
+    background-color: linen;
+}
+
+.data-text {
+    font-size: 40px;
 }
