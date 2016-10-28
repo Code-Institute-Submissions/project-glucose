@@ -115,6 +115,17 @@ function makeGraphs(error, projectsJson) {
             return {count: 0, total: 0};
         });
 
+    function low_only (sourcegroup) {
+        return {
+            all:function(){
+                return sourcegroup.all().filter(function(d){
+                    return (d["BG Rating"] == "Low");
+                })
+            }
+        }
+    }
+
+
     var hypoCount = ratingDim.group().reduce(
         function reduceAdd(p, v) {
             if (v["BG Rating"] == "Low")
@@ -184,8 +195,7 @@ function makeGraphs(error, projectsJson) {
         .group(hypoCount)
         .valueAccessor(function(d) {
             return d.value;
-        })
-        .formatNumber(d3.format("s"));
+        });
 
     avgChart
         .width(800)

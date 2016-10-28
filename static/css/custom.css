@@ -49,8 +49,12 @@ body {
 }
 
 #ghicon {
-    margin-top: 5px;
+    margin-top: 3px;
     float: right;
+}
+
+.intro_button {
+    margin-top:5px;
 }
 
 .tooltip {
@@ -65,4 +69,12 @@ li {
 g text {
     fill: whitesmoke;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+}
+
+.tooltips {
+    background-color: #3c3c3c;
+}
+
+a {
+    margin-left: 10px;
 }

@@ -1,40 +1,147 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlucoTrend</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/lib/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../static/lib/css/dc.css">
     <link rel="stylesheet" href="../static/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="../static/lib/css/local.css" />
+    <link rel="stylesheet" type="text/css" href="../static/lib/css/introjs.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/custom.css">
 
-    <title>GlucoTrend</title>
+    <script src="../static/lib/js/jquery.min.js"></script>
 </head>
 <body>
+<div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-step="1" data-intro="
+            <h2>Welcome to GlucoTrend</h2><hr>
+            <p>Data visualisation aid for Diabetes Management</p>
+            " data-position="bottom">
+        <div class="navbar-header" >
 
-<div class="container">
-    <h1>Ahoy, World!</h1>
-    <div class="row">
-        <div id="time-chart"></div>
-        <div id="rating-chart"></div>
-    </div>
-    <div class="row">
-        <div id="average-chart"></div>
-        <div id="period-chart"></div>
-    </div>
+            <a class="navbar-brand" href="index.html">GlucoTrend ::</a>
+            <button class="intro_button btn btn-success" type="button" autofocus onclick="javascript:introJs().setOption('tooltipClass', 'tooltips').setOption('showProgress', true).start();">User Guide</button>
+            <span class="navbar-brand">:: Diabetes Management Dashboard</span>
 
-    <div class="row">
-        <div id="hypos-chart"></div>
-    </div>
-    <div class="row">
-        <div id="overallavgbg-chart"></div>
+            <a title="View source on Github" target="_blank" href="https://github.com/jodiegardiner/project-glucose"><span id="ghicon" class="fa fa-github fa-3x" aria-hidden="true"></span></a>
+
+        </div>
+
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-md-4">
+                <h1><small>User ID: 366726</small></h1>
+                <h1><small>Device #: 745658</small></h1>
+
+            </div>
+            <div class="col-md-2 col-md-offset-2">
+                <div class="panel panel-primary" data-step="3" data-intro="
+            <h2>Average BG</h2><hr>
+            <p>The average reading (in mmol/L) for the selected range.  This is a general indicator of the level of control someone with diabetes has over their disease.</p><p>Non-sufferers will generally have an average blood glucose value between 4 and 7 and values consistently above this could result in long-term health implications and could be indicative of poor control.</p>
+            " data-position="right">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-info"></i>  Avg Blood Glucose</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="overallavgbg-chart" class="data-text"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-primary" data-step="4" data-intro="
+            <h2>Hypos</h2><hr>
+            <p>Management of diabetes involves careful monitoring of hypoglycemic excursions, known as hypos. These occur when blood glucose levels fall below 4 mmol/L and can lead to diabetic coma. Each and every hypo should be reported to the medical team.</p><p>From a data visualisation point of view, noticing patterns of hypos over a particular date range, or time of day may indicate an issue with insulin regime.</p>
+            " data-position="right" data-toggle="tooltip" data-animation="true" data-placement="bottom" data-html="true" title="A 'hypo' is any BG reading < 4. <p>Inform your medical team of any and all hypos.</p>">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-exclamation-triangle"></i>  Number of hypos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div><span  id="hypos-chart" class="data-text"></span></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-primary" data-step="2" data-intro="
+            <h2>It all starts here!</h2><hr>
+            <p>Click and drag on this chart to slice the timeline to target smaller date ranges.</p>
+            " data-position="right">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i>  Daily Blood Glucose readings   <i class="fa fa-question-circle" data-toggle="tooltip" data-animation="true" data-placement="top" data-html="true" title="Click and drag the chart to select a timeframe."></i></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="time-chart" class="dc-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-primary" data-step="5" data-intro="
+            <h2>Rating</h2><hr>
+            <p>Visual representation of the percentage of time spent with blood glucose levels of the stated rating.</p><p>Combining the data displayed here with time slices or periods can indicate patterns that may assist in adjusting insulin regime.</p>
+            " data-position="left">
+                    <div class="panel-heading" >
+                        <h3 class="panel-title"><i class="fa fa-pie-chart"></i>  Rating   <i class="fa fa-question-circle" data-toggle="tooltip" data-animation="true" data-placement="top" data-html="true" title="Ratings calculated as follows:<ul><li>0-4 = Low</li><li>4.1-10 = Normal</li><li>10.1-20 = High</li><li>Over 20 = Very High</li></ul>"></i></h3>
+                    </div>
+                    <div class="panel-body">
+                        <span id="rating-chart"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-primary" data-step="6" data-intro="
+            <h2>Time Period</h2><hr>
+            <p>Blood glucose readings broken down into 'chunks' of a day.</p><p>Similar to Rating previously, this data can be combined with the other charts to pin-point trouble areas and allow the user to accurately target insulin regime changes to where they are needed most.</p>
+            " data-position="right">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pie-chart"></i>  Readings by Time Period </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="period-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-primary" data-step="7" data-intro="
+            <h2>Average daily BG</h2><hr>
+            <p>Blood glucose reading viewed as a line over time.</p><p>Handy for an at-a-glance overview of trends over a given timescale. Hover over a datapoint for a tooltip containing the exact values.</p>
+            " data-position="top">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i>  Average daily Blood Glucose </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="average-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
     </div>
 </div>
+<!-- /#wrapper -->
 
-<script src="../static/lib/js/jquery.min.js"></script>
+
 <script src="../static/lib/js/bootstrap.min.js"></script>
 <script src="../static/lib/js/crossfilter.js"></script>
 <script src="../static/lib/js/d3.js"></script>
 <script src="../static/lib/js/dc.js"></script>
+<script src="../static/lib/js/intro.min.js"></script>
 <script src="../static/lib/js/queue.js"></script>
 <script src='../static/js/draw_graphs.js' type='text/javascript'></script>
+<script src='../static/js/custom.js' type='text/javascript'></script>
 </body>
 </html>

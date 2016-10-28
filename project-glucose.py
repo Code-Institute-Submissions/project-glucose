@@ -13,7 +13,7 @@ FIELDS = {'Timestamp': True, 'BG Reading': True, 'Date': True, 'Time': True, 'Ra
 
 @app.route("/")
 def index():
-   return render_template("index2.html")
+   return render_template("index.html")
 
 
 
